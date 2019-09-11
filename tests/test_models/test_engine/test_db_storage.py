@@ -67,8 +67,11 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+    def test_db_get(self):
+        """ Test for method get"""
+        
 
-class TestFileStorage(unittest.TestCase):
+class TestDBStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
@@ -86,3 +89,18 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db', "not testing db storage")
+    def test_db_get(self):
+        """ Test for method get"""
+        newID = list(storage.all("State").values())[0].id
+        self.assertIs(None, storage.get("Place", newID))
+        obj = storage.get('State', newID)
+        self.assertEqual(newID, obj.id)
+
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db', "not testing db storage")
+    def test_db_count(self):
+        """ Test for method get"""
+        newcount = storage.count("State")
+        othercount = len(storage.all('State'))
+        self.assertEqual(newcount, othercount)

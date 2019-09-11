@@ -14,6 +14,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from models import storage
 import json
 import os
 import pep8
@@ -113,3 +114,21 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "not testing file storage")
+    def test_get(self):
+        """Test methods get and count"""
+
+        newID = list(storage.all("State").values())[0].id
+        self.assertIs(None, storage.get('City', newID), newID)
+        otherID = storage.get('State', newID)
+        self.assertEqual(otherID.id, newID)
+
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "not testing file storage")
+    def test_count(self):
+        """Test methods get and count"""
+        newcount = storage.count("State")
+        othercount = len(storage.all('State'))
+        self.assertEqual(newcount, othercount)

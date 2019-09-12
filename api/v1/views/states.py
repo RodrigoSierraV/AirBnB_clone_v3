@@ -8,6 +8,7 @@ from api.v1.views import app_views
 
 objs = storage.all('State')
 
+
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
     """get all states
@@ -28,7 +29,10 @@ def get_state(state_id):
     return jsonify(objs[obj_state].to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route(
+    '/states/<state_id>',
+    methods=['DELETE'],
+    strict_slashes=False)
 def delete_states(state_id):
     """delete a state
     """
@@ -44,8 +48,8 @@ def delete_states(state_id):
 def post_states():
     """post states
     """
-    if request.is_json == True:
-        req_data = request.get_json()       
+    if request.is_json:
+        req_data = request.get_json()
         if 'name' not in req_data:
             return(make_response(jsonify('Missing name'), 400))
         new_obj = State(**request.get_json())
@@ -62,11 +66,11 @@ def put_states(state_id):
     obj_state = 'State.' + state_id
     if obj_state not in objs:
         abort(404)
-    if request.is_json == True:
-        req_data = request.get_json()       
+    if request.is_json:
+        req_data = request.get_json()
         obj_to_updt = storage.get('State', state_id)
         for k1, v1 in req_data.items():
-            if k1 != 'id' and k1 != 'updated_at' and k1 !='created_at':
+            if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
                 setattr(obj_to_updt, k1, req_data[k1])
 
         obj_to_updt.save()
@@ -74,7 +78,3 @@ def put_states(state_id):
     else:
         return(make_response(jsonify('Not a JSON'), 400))
     return jsonify(objs[obj_state].to_dict())
-
-
-
-

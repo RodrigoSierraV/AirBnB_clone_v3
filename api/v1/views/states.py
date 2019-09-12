@@ -39,7 +39,7 @@ def delete_states(state_id):
     key_state = 'State.' + state_id
     if key_state not in objs:
         abort(404)
-    objs[key_state].delete()
+    storage.delete(objs[key_state])
     storage.save()
     return (jsonify({}), 200)
 
@@ -67,14 +67,16 @@ def put_states(state_id):
     if obj_state not in objs:
         abort(404)
     if request.is_json:
+        print("isjason")
         req_data = request.get_json()
         obj_to_updt = storage.get('State', state_id)
         if obj_to_updt is not None:
             for k1, v1 in req_data.items():
                 if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
                     setattr(obj_to_updt, k1, req_data[k1])
-
             obj_to_updt.save()
             return(jsonify(obj_to_updt.to_dict()), 200)
+        else:
+            abort(404)
     else:
         return(abort(400, 'Not a JSON'))

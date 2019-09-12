@@ -34,7 +34,7 @@ def get_amenity(amenity_id):
     '/amenities/<amenity_id>',
     methods=['DELETE'],
     strict_slashes=False)
-def delete_states(amenity_id):
+def delete_amen(amenity_id):
     """delete a state
     """
     key_state = 'Amenity.' + amenity_id
@@ -46,7 +46,7 @@ def delete_states(amenity_id):
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
-def post_states():
+def post_amen():
     """post states
     """
     if request.is_json:
@@ -62,7 +62,7 @@ def post_states():
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
                  strict_slashes=False)
-def put_states(amenity_id):
+def put_amen(amenity_id):
     """put state
     """
     obj_state = 'Amenity.' + amenity_id

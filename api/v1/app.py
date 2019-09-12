@@ -4,6 +4,7 @@
 from flask import Flask
 from models import storage
 from api.v1.views import app_views
+import os
 
 app = Flask(__name__)
 
@@ -18,4 +19,6 @@ def close_context(self):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    app.run(host=os.getenv('HBNB_API_HOST', '0.0.0.0'),
+            port=int(os.getenv('HBNB_API_PORT', 5000)),
+            threaded=True)

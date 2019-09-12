@@ -19,7 +19,7 @@ def get_amenitiess():
     return jsonify(new_list)
 
 
-@app_views.route('/amenitiess/<amenity_id>', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_state(amenity_id):
     """get a state

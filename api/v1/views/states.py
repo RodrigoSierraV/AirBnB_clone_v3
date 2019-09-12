@@ -63,6 +63,7 @@ def post_states():
 def put_states(state_id):
     """put state
     """
+    ignore_keys = ['id', 'created_at', 'updated_at']
     obj_state = 'State.' + state_id
     if obj_state not in objs:
         abort(404)
@@ -72,7 +73,7 @@ def put_states(state_id):
         obj_to_updt = storage.get('State', state_id)
         if obj_to_updt is not None:
             for k1, v1 in req_data.items():
-                if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
+                if k1 not in ignore_keys:
                     setattr(obj_to_updt, k1, req_data[k1])
             obj_to_updt.save()
             return(jsonify(obj_to_updt.to_dict()), 200)

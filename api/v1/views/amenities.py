@@ -21,7 +21,7 @@ def get_amenitiess():
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
-def get_state(amenity_id):
+def get_amenity(amenity_id):
     """get a state
     """
     obj_state = 'Amenity.' + amenity_id

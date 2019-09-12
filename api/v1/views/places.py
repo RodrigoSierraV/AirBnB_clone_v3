@@ -27,7 +27,7 @@ def get_cityplace(city_id):
 
 @app_views.route('/places/<place_id>', methods=['GET'],
                  strict_slashes=False)
-def get_place(place_id):
+def get_places(place_id):
     """get a state
     """
     obj_place = 'Place.' + amenity_id
@@ -40,7 +40,7 @@ def get_place(place_id):
     '/places/<place_id>',
     methods=['DELETE'],
     strict_slashes=False)
-def delete_place(place_id):
+def delete_places(place_id):
     """delete a place
     """
     key_place = 'Place.' + place_id
@@ -53,8 +53,6 @@ def delete_place(place_id):
 """
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def post_place():
-    """post a place
-    """
     if request.is_json:
         req_data = request.get_json()
         if 'name' not in req_data:
@@ -69,7 +67,7 @@ def post_place():
 
 @app_views.route('/places/<place_id>', methods=['PUT'],
                  strict_slashes=False)
-def put_place(place_id):
+def put_places(place_id):
     """put place
     """
     ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']

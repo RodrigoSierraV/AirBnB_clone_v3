@@ -2,7 +2,7 @@
 """ handle all default RESTful API"""
 from models.state import State
 from os import getenv
-from flask import Flask, abort, jsonify, request, make_response
+from flask import abort, jsonify, request, make_response
 from models import storage
 from api.v1.views import app_views
 
@@ -69,12 +69,12 @@ def put_states(state_id):
     if request.is_json:
         req_data = request.get_json()
         obj_to_updt = storage.get('State', state_id)
-        for k1, v1 in req_data.items():
-            if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
-                setattr(obj_to_updt, k1, req_data[k1])
+        if obj_to_updt is not None:
+            for k1, v1 in req_data.items():
+                if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
+                    setattr(obj_to_updt, k1, req_data[k1])
 
-        obj_to_updt.save()
-        return(jsonify(obj_to_updt.to_dict()), 201)
+            obj_to_updt.save()
+            return(jsonify(obj_to_updt.to_dict()), 200)
     else:
-        return(make_response(jsonify('Not a JSON'), 400))
-    return jsonify(objs[obj_state].to_dict())
+        return(abort(400, 'Not a JSON'))

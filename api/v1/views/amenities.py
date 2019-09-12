@@ -24,7 +24,7 @@ def get_amenitiess():
 def get_state(amenity_id):
     """get a state
     """
-    obj_state = 'Amenity.' + state_id
+    obj_state = 'Amenity.' + amenity_id
     if obj_state not in objs:
         abort(404)
     return jsonify(objs[obj_state].to_dict())
@@ -37,7 +37,7 @@ def get_state(amenity_id):
 def delete_states(amenity_id):
     """delete a state
     """
-    key_state = 'Amenity.' + state_id
+    key_state = 'Amenity.' + amenity_id
     if key_state not in objs:
         abort(404)
     objs[key_state].delete()
@@ -53,7 +53,7 @@ def post_states():
         req_data = request.get_json()
         if 'name' not in req_data:
             return(make_response(jsonify('Missing name'), 400))
-        new_obj = State(**request.get_json())
+        new_obj = Amenity(**request.get_json())
         new_obj.save()
         return(jsonify(new_obj.to_dict()), 201)
     else:
@@ -65,12 +65,12 @@ def post_states():
 def put_states(amenity_id):
     """put state
     """
-    obj_state = 'Amenity.' + state_id
+    obj_state = 'Amenity.' + amenity_id
     if obj_state not in objs:
         abort(404)
     if request.is_json:
         req_data = request.get_json()
-        obj_to_updt = storage.get('Amenity', state_id)
+        obj_to_updt = storage.get('Amenity', amenity_id)
         for k1, v1 in req_data.items():
             if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
                 setattr(obj_to_updt, k1, req_data[k1])

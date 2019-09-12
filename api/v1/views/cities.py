@@ -16,10 +16,8 @@ def get_cities(state_id):
     """
     new_list = []
     for key, val in objs.items():
-        city_obj = val.to_dict()
-        for v in city_obj:
-            if state_id == city_obj[v]:
-                new_list.append(city_obj)
+        if val.state_id == state_id:
+            new_list.append(val.to_dict())
     if len(new_list) == 0:
         abort(404)
     return jsonify(new_list)
@@ -47,13 +45,14 @@ def delete_city(city_id):
         abort(404)
     objs[key_city].delete()
     storage.save()
+    storage.close()
     return (jsonify({}), 200)
 
 
 @app_views.route('/states/<state_id>/cities',
                  methods=['POST'], strict_slashes=False)
 def post_city(state_id):
-    """post city
+    """create city
     """
     if request.is_json:
         req_data = request.get_json()
@@ -62,30 +61,27 @@ def post_city(state_id):
 
         for key, val in objs.items():
             if val.state_id == state_id:
+                req_data['state_id'] = val.state_id
                 new_obj = City(**req_data)
                 new_obj.save()
-                return(jsonify(new_obj.to_dict()), 200)
+                return(jsonify(new_obj.to_dict()), 201)
         abort(404)
     else:
         abort(400, 'Not a JSON')
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-def put_city(state_id):
-    """put state
+@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
+def put_city(city_id):
+    """update city
     """
-    obj_state = 'State.' + state_id
-    if obj_state not in objs:
-        abort(404)
     if request.is_json:
         req_data = request.get_json()
-        obj_to_updt = storage.get('State', state_id)
-        if obj_to_updt is not None:
+        obj_to_up = storage.get('City', city_id)
+        if obj_to_up is not None:
             for k1, v1 in req_data.items():
                 if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
-                    setattr(obj_to_updt, k1, req_data[k1])
-
-            obj_to_updt.save()
-            return(jsonify(obj_to_updt.to_dict()), 200)
+                    setattr(obj_to_up, k1, req_data[k1])
+            obj_to_up.save()
+            return(jsonify(obj_to_up.to_dict()), 200)
     else:
         return(abort(400, 'Not a JSON'))

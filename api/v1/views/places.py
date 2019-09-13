@@ -49,7 +49,7 @@ def deletes_places(place_id):
     return (jsonify({}), 200)
 
 
-@app_views.route('/cities/<city_id/places>',
+@app_views.route('/cities/<city_id>/places>',
                  methods=['POST'], strict_slashes=False)
 def posts_places(city_id):
     """ POST a Place
@@ -59,7 +59,7 @@ def posts_places(city_id):
         abort(404)
     if request.is_json:
         req_data = request.get_json()
-        if user_id not in req_data:
+        if 'user_id' not in req_data:
             return(make_response(jsonify('Missing user_id'), 400))
         usr = storage.get('User', req_data['user_id'])
         if not usr:

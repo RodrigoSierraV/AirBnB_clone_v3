@@ -27,8 +27,8 @@ def get_cities(state_id):
 def get_city(city_id):
     """get a city
     """
-    city_obj = storage.get('City', city_id)
     try:
+        city_obj = storage.get('City', city_id)
         return jsonify(city_obj.to_dict())
     except:
         abort(404)
@@ -41,8 +41,8 @@ def get_city(city_id):
 def delete_city(city_id):
     """delete a city
     """
-    city_obj = storage.get('City', city_id)
     try:
+        city_obj = storage.get('City', city_id)
         storage.delete(city_obj)
         storage.save()
         return (jsonify({}), 200)

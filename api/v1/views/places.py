@@ -11,7 +11,7 @@ objs = storage.all('Place')
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
-def get_cityplace(city_id):
+def gets_cityplace(city_id):
     """get places from cities
     """
     new_list = []
@@ -25,7 +25,7 @@ def get_cityplace(city_id):
 
 @app_views.route('/places/<place_id>', methods=['GET'],
                  strict_slashes=False)
-def get_places(place_id):
+def gets_places(place_id):
     """get a state
     """
     obj_place = 'Place.' + amenity_id
@@ -38,7 +38,7 @@ def get_places(place_id):
     '/places/<place_id>',
     methods=['DELETE'],
     strict_slashes=False)
-def delete_places(place_id):
+def deletes_places(place_id):
     """delete a place
     """
     key_place = 'Place.' + place_id
@@ -51,7 +51,7 @@ def delete_places(place_id):
 
 @app_views.route('/cities/<city_id/places>',
                  methods=['POST'], strict_slashes=False)
-def post_places(city_id):
+def posts_places(city_id):
     """ POST a Place
     """
     cty = storage.get('City', city_id)
@@ -76,7 +76,7 @@ def post_places(city_id):
 
 @app_views.route('/places/<place_id>', methods=['PUT'],
                  strict_slashes=False)
-def put_places(place_id):
+def puts_places(place_id):
     """put place
     """
     ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']

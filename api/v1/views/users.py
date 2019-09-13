@@ -2,7 +2,7 @@
 """ handle all default RESTful API"""
 from models.user import User
 from os import getenv
-from flask import abort, jsonify, request, make_response
+from flask import abort, jsonify, request
 from models import storage
 from api.v1.views import app_views
 

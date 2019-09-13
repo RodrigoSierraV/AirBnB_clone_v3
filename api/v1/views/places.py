@@ -51,7 +51,9 @@ def delete_places(place_id):
 
 @app_views.route('/cities/<city_id/places>',
                  methods=['POST'], strict_slashes=False)
-def post_place(city_id):
+def post_places(city_id):
+    """ POST a Place
+    """
     cty = storage.get('City', city_id)
     if not cty:
         abort(404)

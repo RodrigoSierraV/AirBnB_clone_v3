@@ -7,9 +7,10 @@ from models import storage
 from api.v1.views import app_views
 from flask import jsonify
 import os
+from flasgger import Swagger
 
 app = Flask(__name__)
-
+swagger = Swagger(app)
 app.register_blueprint(app_views)
 app.url_map.strict_slashes = False
 CORS(app, resources={"/*": {'origins': "0.0.0.0"}})
@@ -29,5 +30,5 @@ def page_not_found(e):
 
 if __name__ == "__main__":
     app.run(host=os.getenv('HBNB_API_HOST', '0.0.0.0'),
-            port=int(os.getenv('HBNB_API_PORT', 5000)),
+            port=int(os.getenv('HBNB_API_PORT', '5000')),
             threaded=True)

@@ -2,7 +2,7 @@
 """ handle all default RESTful API"""
 from models.city import City
 from os import getenv
-from flask import abort, jsonify, request, make_response
+from flask import abort, jsonify, request
 from models import storage
 from api.v1.views import app_views
 
@@ -27,10 +27,11 @@ def get_cities(state_id):
 def get_city(city_id):
     """get a city
     """
-    city_obj = 'City.' + city_id
-    if city_obj not in objs:
+    city_obj = storage.get('City', city_id)
+    try:
+        return jsonify(city_obj.to_dict())
+    except:
         abort(404)
-    return jsonify(objs[city_obj].to_dict())
 
 
 @app_views.route(
@@ -40,13 +41,13 @@ def get_city(city_id):
 def delete_city(city_id):
     """delete a city
     """
-    key_city = 'City.' + city_id
-    if key_city not in objs:
+    city_obj = storage.get('City', city_id)
+    try:
+        storage.delete(city_obj)
+        storage.save()
+        return (jsonify({}), 200)
+    except:
         abort(404)
-    objs[key_city].delete()
-    storage.save()
-    storage.close()
-    return (jsonify({}), 200)
 
 
 @app_views.route('/states/<state_id>/cities',
@@ -74,14 +75,16 @@ def post_city(state_id):
 def put_city(city_id):
     """update city
     """
+    ignore_keys = ['id', 'created_at', 'updated_at']
     if request.is_json:
         req_data = request.get_json()
         obj_to_up = storage.get('City', city_id)
         if obj_to_up is not None:
             for k1, v1 in req_data.items():
-                if k1 != 'id' and k1 != 'updated_at' and k1 != 'created_at':
+                if k1 not in ignore_keys:
                     setattr(obj_to_up, k1, req_data[k1])
-            obj_to_up.save()
+            storage.save()
+            storage.close()
             return(jsonify(obj_to_up.to_dict()), 200)
     else:
         return(abort(400, 'Not a JSON'))

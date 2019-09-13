@@ -17,8 +17,6 @@ def get_cityplace(city_id):
     new_list = []
     if not storage.get('City', city_id):
         abort(404)
-    places = objs.values()
-    print(places, '\n\t\tthis is places')
     for i in objs.values():
         if i.city_id == city_id:
             new_list.append(i.to_dict)
@@ -50,19 +48,28 @@ def delete_places(place_id):
     storage.save()
     return (jsonify({}), 200)
 
-"""
-@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
-def post_place():
+
+@app_views.route('/cities/<city_id/places>',
+                 methods=['POST'], strict_slashes=False)
+def post_place(city_id):
+    cty = storage.get('City', city_id)
+    if not cty:
+        abort(404)
     if request.is_json:
         req_data = request.get_json()
+        if user_id not in req_data:
+            return(make_response(jsonify('Missing user_id'), 400))
+        usr = storage.get('User', req_data['user_id'])
+        if not usr:
+            abort(404)
         if 'name' not in req_data:
             return(make_response(jsonify('Missing name'), 400))
-        new_obj = Amenity(**request.get_json())
+        req_data['city_id'] = city_id
+        new_obj = Place(**req_data)
         new_obj.save()
         return(jsonify(new_obj.to_dict()), 201)
     else:
         return(make_response(jsonify('Not a JSON'), 400))
-"""
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'],

@@ -74,7 +74,7 @@ def post_review(place_id):
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'],
                  strict_slashes=False)
-def put_places(review_id):
+def put_review(review_id):
     """update review
     """
     ignore = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']

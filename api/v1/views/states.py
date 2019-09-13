@@ -36,12 +36,13 @@ def get_state(state_id):
 def delete_states(state_id):
     """delete a state
     """
-    key_state = 'State.' + state_id
-    if key_state not in objs:
+    try:
+        state_obj = storage.get('State', state_id)
+        storage.delete(state_obj)
+        storage.save()
+        return (jsonify({}), 200)
+    except:
         abort(404)
-    storage.delete(objs[key_state])
-    storage.save()
-    return (jsonify({}), 200)
 
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)

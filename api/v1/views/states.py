@@ -75,8 +75,8 @@ def put_states(state_id):
             for k1, v1 in req_data.items():
                 if k1 not in ignore_keys:
                     setattr(obj_to_updt, k1, req_data[k1])
-        obj_to_updt.save()
-        return(jsonify(obj_to_updt.to_dict()), 200)
+            obj_to_updt.save()
+            return(jsonify(obj_to_updt.to_dict()), 200)
         else:
             abort(404)
     else:

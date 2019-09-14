@@ -41,13 +41,12 @@ def get_city(city_id):
 def delete_city(city_id):
     """delete a city
     """
-    try:
-        city_obj = storage.get('City', city_id)
-        storage.delete(city_obj)
-        storage.save()
-        return (jsonify({}), 200)
-    except:
+    city_obj = storage.get('City', city_id)
+    if city_obj is None:
         abort(404)
+    storage.delete(city_obj)
+    storage.save()
+    return (jsonify({}), 200)
 
 
 @app_views.route('/states/<state_id>/cities',
@@ -86,5 +85,7 @@ def put_city(city_id):
             storage.save()
             storage.close()
             return(jsonify(obj_to_up.to_dict()), 200)
+        else:
+            abort(404)
     else:
         return(abort(400, 'Not a JSON'))

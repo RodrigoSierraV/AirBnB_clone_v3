@@ -45,7 +45,6 @@ def delete_states(state_id):
         return (jsonify({}), 200)
 
 
-
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def post_states():
     """post states
@@ -56,6 +55,7 @@ def post_states():
             return(make_response(jsonify('Missing name'), 400))
         new_obj = State(**request.get_json())
         new_obj.save()
+        storage.reload()
         return(jsonify(new_obj.to_dict()), 201)
     else:
         return(make_response(jsonify('Not a JSON'), 400))

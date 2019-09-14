@@ -27,11 +27,10 @@ def get_cities(state_id):
 def get_city(city_id):
     """get a city
     """
-    try:
-        city_obj = storage.get('City', city_id)
-        return jsonify(city_obj.to_dict())
-    except:
+    city_obj = storage.get('City', city_id)
+    if city_obj is None:
         abort(404)
+    return jsonify(city_obj.to_dict())
 
 
 @app_views.route(

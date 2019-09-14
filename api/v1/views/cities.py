@@ -18,8 +18,6 @@ def get_cities(state_id):
     for key, val in objs.items():
         if val.state_id == state_id:
             new_list.append(val.to_dict())
-    if len(new_list) == 0:
-        abort(404)
     return jsonify(new_list)
 
 

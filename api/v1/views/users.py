@@ -15,9 +15,10 @@ def get_users():
     """get all users
     """
     new_list = []
-    new_list.append(objs.to_dict())
-    if len(new_list) == 0:
+    if not objs:
         abort(404)
+    for k, v in objs.items():
+        new_list.append(v.to_dict())
     return jsonify(new_list)
 
 
@@ -25,7 +26,7 @@ def get_users():
 def get_user(user_id):
     """get a user
     """
-    user_obj = 'User.' + city_id
+    user_obj = 'User.' + user_id
     if user_obj not in objs:
         abort(404)
     return jsonify(objs[user_obj].to_dict())
@@ -38,7 +39,7 @@ def get_user(user_id):
 def delete_user(user_id):
     """delete a user
     """
-    user_obj = 'City.' + city_id
+    user_obj = 'User.' + user_id
     if key_city not in objs:
         abort(404)
     objs[user_obj].delete()
